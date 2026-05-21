@@ -1,12 +1,12 @@
 const { Router } = require('express');
-const Book = require('../models/Book');
+const Livro = require('../models/Book');
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const books = await Book.findAll();
-    res.json(books);
+    const livros = await Livro.findAll();
+    res.json(livros);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id);
-    if (!book) return res.status(404).json({ error: 'Not found' });
-    res.json(book);
+    const livro = await Livro.findByPk(req.params.id);
+    if (!livro) return res.status(404).json({ error: 'Not found' });
+    res.json(livro);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -24,8 +24,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const book = await Book.create(req.body);
-    res.status(201).json(book);
+    const livro = await Livro.create(req.body);
+    res.status(201).json(livro);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -33,10 +33,10 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id);
-    if (!book) return res.status(404).json({ error: 'Not found' });
-    await book.update(req.body);
-    res.json(book);
+    const livro = await Livro.findByPk(req.params.id);
+    if (!livro) return res.status(404).json({ error: 'Not found' });
+    await livro.update(req.body);
+    res.json(livro);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -44,9 +44,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id);
-    if (!book) return res.status(404).json({ error: 'Not found' });
-    await book.destroy();
+    const livro = await Livro.findByPk(req.params.id);
+    if (!livro) return res.status(404).json({ error: 'Not found' });
+    await livro.destroy();
     res.status(204).send();
   } catch (err) {
     res.status(500).json({ error: err.message });
