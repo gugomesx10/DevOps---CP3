@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const books = await Book.find();
+    const books = await Book.findAll();
     res.json(books);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findByPk(req.params.id);
     if (!book) return res.status(404).json({ error: 'Not found' });
     res.json(book);
   } catch (err) {
@@ -33,11 +33,9 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const book = await Book.findByPk(req.params.id);
     if (!book) return res.status(404).json({ error: 'Not found' });
+    await book.update(req.body);
     res.json(book);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -46,8 +44,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const book = await Book.findByIdAndDelete(req.params.id);
+    const book = await Book.findByPk(req.params.id);
     if (!book) return res.status(404).json({ error: 'Not found' });
+    await book.destroy();
     res.status(204).send();
   } catch (err) {
     res.status(500).json({ error: err.message });

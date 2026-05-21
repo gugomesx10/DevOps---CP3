@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database');
 
-const bookSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    year: { type: Number },
-  },
-  { timestamps: true }
-);
+const Book = sequelize.define('Book', {
+  title: { type: DataTypes.STRING, allowNull: false },
+  author: { type: DataTypes.STRING, allowNull: false },
+  year: { type: DataTypes.INTEGER },
+});
 
-module.exports = mongoose.model('Book', bookSchema);
+module.exports = Book;
