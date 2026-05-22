@@ -1,0 +1,52 @@
+apiVersion: '2021-09-01'
+location: canadacentral
+name: devops-cp3-group
+properties:
+  containers:
+  - name: db
+    properties:
+      image: mysql:8.0
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1
+      environmentVariables:
+      - name: MYSQL_ROOT_PASSWORD
+        value: cp3devops
+      - name: MYSQL_DATABASE
+        value: devops_cp3
+  - name: app
+    properties:
+      image: acrdevopscp3.azurecr.io/devops-cp3-app:latest
+      ports:
+      - port: 3000
+        protocol: TCP
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1
+      environmentVariables:
+      - name: DB_HOST
+        value: 127.0.0.1
+      - name: DB_NAME
+        value: devops_cp3
+      - name: DB_USER
+        value: root
+      - name: DB_PASS
+        value: cp3devops
+      - name: PORT
+        value: "3000"
+  imageRegistryCredentials:
+  - server: acrdevopscp3.azurecr.io
+    username: acrdevopscp3
+    password: 6ZMtpvBYmw5b47m1l142d6m0bLkYCN0SdK7l3rG7AL1jCEs6X0PyJQQJ99CEACBsN54Eqg7NAAACAZCRHP8b
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: TCP
+      port: 3000
+    dnsNameLabel: devops-cp3-app
+  osType: Linux
+  restartPolicy: Always
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups
